@@ -16,6 +16,7 @@
 #include <sched.h>
 #include <stdio.h>
 #include <sys/mman.h>
+#include <stdarg.h>
 size_t __mbstowcs_chk(wchar_t *dst, const char *src, size_t len, size_t dstlen) {
     size_t result;
 
@@ -178,5 +179,82 @@ int pthread_attr_setaffinity_np(pthread_t thread, size_t cpusetsize, const cpu_s
 
     return 0;  // Success
 }
+void __assert(const char *file, int line, const char *func, const char *failedexpr) {
+    fprintf(stderr, "Assertion failed: %s, function %s, file %s, line %d.\n", failedexpr, func, file, line);
+    abort();  // Terminate the program
+}
 
+int __isoc23_fscanf(FILE *stream, const char *format, ...) {
+    va_list ap;
+    va_start(ap, format);
+    int result = vfscanf(stream, format, ap);
+    va_end(ap);
+    return result;
+}
 
+long long __isoc23_strtoll(const char *nptr, char **endptr, int base) {
+    return strtoll(nptr, endptr, base);
+}
+
+int __isoc23_vfscanf(FILE *stream, const char *format, va_list arg) {
+    return vfscanf(stream, format, arg);
+}
+
+unsigned long __isoc23_wcstoul(const wchar_t *nptr, wchar_t **endptr, int base) {
+    return wcstoul(nptr, endptr, base);
+}
+
+long long __isoc23_strtoll_l(const char *nptr, char **endptr, int base, locale_t loc) {
+    (void)loc;
+    return strtoll(nptr, endptr, base);
+}
+
+int __isoc23_vscanf(const char *format, va_list arg) {
+    return vscanf(format, arg);
+}
+
+int __isoc23_scanf(const char *format, ...) {
+    va_list ap;
+    va_start(ap, format);
+    int result = vscanf(format, ap);
+    va_end(ap);
+    return result;
+}
+
+unsigned long long __isoc23_strtoull_l(const char *nptr, char **endptr, int base, locale_t loc) {
+    (void)loc;
+    return strtoull(nptr, endptr, base);
+}
+
+long long __isoc23_wcstoll(const wchar_t *nptr, wchar_t **endptr, int base) {
+    return wcstoll(nptr, endptr, base);
+}
+
+unsigned long long __isoc23_wcstoull(const wchar_t *nptr, wchar_t **endptr, int base) {
+    return wcstoull(nptr, endptr, base);
+}
+
+int __isoc23_vsscanf(const char *s, const char *format, va_list arg) {
+    return vsscanf(s, format, arg);
+}
+
+int __isoc23_sscanf(const char *s, const char *format, ...) {
+    va_list ap;
+    va_start(ap, format);
+    int result = vsscanf(s, format, ap);
+    va_end(ap);
+    return result;
+}
+
+unsigned long __isoc23_strtoul_l(const char *nptr, char **endptr, int base, locale_t loc) {
+    (void)loc;
+    return strtoul(nptr, endptr, base);
+}
+
+long __isoc23_wcstol(const wchar_t *nptr, wchar_t **endptr, int base) {
+    return wcstol(nptr, endptr, base);
+}
+
+unsigned long long __isoc23_strtoull(const char *nptr, char **endptr, int base) {
+    return strtoull(nptr, endptr, base);
+}

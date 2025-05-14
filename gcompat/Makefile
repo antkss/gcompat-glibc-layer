@@ -1,4 +1,4 @@
-CFLAGS = -pthread
+CFLAGS = -pthread -g
 LIBGCOMPAT_INCLUDE = \
 	libgcompat/alias.h \
 	libgcompat/internal.h

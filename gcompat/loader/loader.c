@@ -91,16 +91,17 @@ int main(int argc, char *argv[], char *envp[])
 	ssize_t i, j, len;
 
 	strlcpy(preload, LIBGCOMPAT " ", sizeof(preload));
-	if (getenv("LD_PRELOAD") != NULL) {
-		len = strlcat(preload, getenv("LD_PRELOAD"), sizeof(preload));
-		if ((size_t) len >= sizeof(preload)) {
-			fputs("too many preloaded libraries", stderr);
+	char *ld_preload = getenv("LD_PRELOAD");
+	if (ld_preload != NULL) {
+		len = strlcat(preload, ld_preload, sizeof(preload));
+		if (len < 0) {
+			perror("strlcat");
 			return EXIT_FAILURE;
 		}
 	}
 
 	len = readlink("/proc/self/exe", target, sizeof(target));
-	if (len < 0 || len == sizeof(target)) {
+	if (len < 0) {
 		perror("readlink");
 		return EXIT_FAILURE;
 	}

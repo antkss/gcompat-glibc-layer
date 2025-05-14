@@ -4,7 +4,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "alias.h" /* alias */
-#include "internal.h"
 
 struct glibc_locale {
 	/* hopefully nobody pokes at this */
@@ -55,3 +54,4 @@ void *__duplocale(struct glibc_locale *loc) {
 }
 
 alias(__duplocale, duplocale);
+int _nl_msg_cat_cntr = 0;

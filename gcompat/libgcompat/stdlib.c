@@ -1,8 +1,11 @@
 #include <assert.h> /* assert */
+#include <errno.h>
 #include <limits.h> /* PATH_MAX */
 #include <locale.h> /* locale_t */
 #include <stddef.h> /* NULL, size_t */
+#include <stdio.h>
 #include <stdlib.h> /* getenv, realpath, strto* */
+#include <time.h>
 #include <unistd.h> /* get*id */
 
 #include "alias.h"
@@ -78,6 +81,27 @@ long __strtol_internal(const char *nptr, char **endptr, int base, int group)
 
 	return strtol(nptr, endptr, base);
 }
+unsigned long strtoul_l(const char *str, char **endptr, int base, const char *locale) {
+    // Call the standard strtoul function
+    unsigned long result = strtoul(str, endptr, base);
+
+    // Handle errors like overflow or invalid conversion
+    if ((result == ULONG_MAX || result == 0) && errno == ERANGE) {
+        perror("Conversion error");
+    }
+
+    return result;
+}
+struct tm* strptime_l(const char *str, const char *format, struct tm *tm, const char *locale) {
+    char *result = strptime(str, format, tm);
+    if (result == NULL) {
+        perror("Error while parsing date string");
+        return NULL;
+    }
+
+    return tm;
+}
+
 
 /**
  * Underlying function for strtold.
