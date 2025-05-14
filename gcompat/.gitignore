@@ -1,4 +1,4 @@
 *.o
 libgcompat.*
 *.so*
-".cache"
+*.cache*
